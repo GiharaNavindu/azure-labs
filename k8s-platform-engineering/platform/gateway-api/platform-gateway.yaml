@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform-gateway
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: public-gateway
+  namespace: platform-gateway
+  annotations:
+    # This tells cert-manager to automatically generate the certificate!
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+spec:
+  gatewayClassName: nginx
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https
+    port: 443
+    protocol: HTTPS
+    # REPLACE WITH YOUR IP: e.g., 20.55.123.45.nip.io
+    hostname: "20.85.167.50.nip.io"
+    tls:
+      mode: Terminate
+      certificateRefs:
+      # Cert-manager will automatically create this secret and put the cert inside
+      - name: public-gateway-tls-secret
+    allowedRoutes:
+      namespaces:
+        from: All
