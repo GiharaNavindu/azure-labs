@@ -10,7 +10,7 @@ spec:
     repoURL: 'https://github.com/GiharaNavindu/azure-labs.git'
     targetRevision: HEAD
     # It will ONLY deploy the files inside this specific folder
-    path: 'k8s-platform-engineering/applications/nginx-app'
+    path: 'applications/nginx-app'
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: beginner-nginx
