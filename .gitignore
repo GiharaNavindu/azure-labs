@@ -1,1 +1,4 @@
 bin/
+infrastructure/.terraform/
+*.tfstate
+*.tfstate.backup
