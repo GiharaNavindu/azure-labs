@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-gitops
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # ArgoCD is now pointing directly to your live GitHub repository!
+    repoURL: 'https://github.com/GiharaNavindu/azure-labs.git'
+    targetRevision: HEAD
+    # It will ONLY deploy the files inside this specific folder
+    path: 'k8s-platform-engineering/applications/nginx-app'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: beginner-nginx
+  syncPolicy:
+    automated:
+      prune: true     # Automatically delete resources if you remove them from Git
+      selfHeal: true  # Automatically fix changes made manually in the cluster
+    syncOptions:
+      - CreateNamespace=true
