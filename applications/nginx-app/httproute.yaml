@@ -1,24 +1,15 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: nginx
+  name: nginx-route
   namespace: beginner-nginx
-  labels:
-    app: nginx
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: nginx
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      nodeSelector:
-        workload: user
-      containers:
+  parentRefs:
+    - name: public-gateway
+      namespace: platform-gateway
+  hostnames:
+    - "48.216.181.196.nip.io"
+  rules:
+    - backendRefs:
         - name: nginx
-          image: nginx:1.27-alpine
-          ports:
-            - containerPort: 80
+          port: 80
